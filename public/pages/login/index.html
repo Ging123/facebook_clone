@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
   
 <head>
   <meta charset="UTF-8">
@@ -13,6 +13,12 @@
 </head>
 
 <body>
+
+  <div 
+    id="singin-hover" 
+    class="model invisible"
+    onclick="makeSinginContainerInvisible()"
+  ></div>
 
   <section id="login-screen-container">
 
@@ -35,13 +41,13 @@
             type="text" 
             placeholder="Email ou telefone" 
             name="emailOrEmail"
-            class="login-input"
+            class="default-input blue-border-effect"
           >
           <input 
             type="password" 
             placeholder="Senha" 
             name="password"
-            class="login-input small-margin-top"
+            class="default-input small-margin-top blue-border-effect"
           >
           <input 
             type="submit" 
@@ -58,8 +64,9 @@
             <input 
               type="button" 
               value="Criar nova conta"
-              class="main-button"
+              class="secundary-button"
               id="create-new-account"
+              onclick="showSinginContainer()"
             >
           </div>
         </form>
@@ -69,9 +76,122 @@
         <span class="bold underline-effect">Criar uma Página</span> 
         para uma celebridade, banda ou empresa.
       </div>
+
     </main>
 
   </section>
 
+  <!--APARTI DAQUI É O CONTAINER DE SE REGISTRAR-->
+  <section id="singin-container" class="white-box-container invisible">
+    <div id="singin-container-header">
+      <div class="bigger-text bold">Cadastre-se</div>
+      <div id="fast-and-easy-text">É rápido e fácil.</div>
+    </div>
+    
+    <form id="singin-form-container">
+      <div id="name-and-lastname-container">
+        <input
+          type="text"
+          placeholder="Nome"
+          class="secundary-input"
+        >
+        <input
+          type="text"
+          placeholder="Sobrenome"
+          class="secundary-input smaller-margin-left"
+        >
+      </div>
+      <input 
+        type="text" 
+        placeholder="Celular ou email"
+        class="secundary-input small-margin-top"
+      >
+      <input 
+        type="password" 
+        placeholder="Nova senha"
+        class="secundary-input small-margin-top"
+      >
+      <div class="smaller-text small-margin-top">Data de nascimento</div>
+      <div id="birthday-container">
+        <select id="day" class="default-select "></select>
+        <select id="month" class="default-select small-margin-left"></select>
+        <select id="year" class="default-select small-margin-left"></select>
+      </div>
+      <div class="smaller-text small-margin-top">Gênero</div>
+      <div id="gender-container">
+        <div class="input-radio-container">
+          <span>Feminino</span>
+          <input 
+            type="radio"
+            value="feminino"
+            name="gender"
+            class="small-margin-left"
+            onclick="hideInputForEditGender()"
+          >
+        </div>
+        <div class="input-radio-container small-margin-left">
+          <span>Masculino</span>
+          <input 
+            type="radio"
+            value="masculino"
+            name="gender"
+            class="small-margin-left"
+            onclick="hideInputForEditGender()"
+          >
+        </div>
+        <div class="input-radio-container small-margin-left">
+          <span>Personalizado</span>
+          <input 
+            type="radio"
+            value="personalizado"
+            name="gender"
+            class="small-margin-left"
+            onclick="showInputForEditGender()"
+          >
+        </div>
+      </div>
+      <input 
+          type="text"
+          placeholder="Digite seu gênero aqui"
+          id="custom-gender-input"
+          class="secundary-input small-margin-top invisible"
+        >
+      <div class="smaller-text margin-top">
+        Ao clicar em Cadastre-se, você concorda com nossos 
+        <a 
+          href="https://www.facebook.com/legal/terms/update" 
+          target="_blank"
+          class="underline-effect default-link">
+          Termos
+        </a>, 
+        <a 
+          href="https://www.facebook.com/about/privacy/update" 
+          target="_blank"
+          class="underline-effect default-link">
+          Política de Dados
+        </a>
+         e 
+         <a 
+           href="https://www.facebook.com/policies/cookies/" 
+           target="_blank"
+           class="underline-effect default-link">
+           Política de Cookies
+        </a>
+        . Você poderá receber notificações por SMS e cancelar isso quando quiser.
+      </div>
+      <div class="text-align-center bigger-margin-top">
+        <input 
+          id="singin"
+          value="Cadastre-se"
+          type="button"
+          class="secundary-button"
+        >
+      </div>
+    </form>
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="public/global/js/domUtil.js"></script>
+  <script src="public/pages/login/js/main.js"></script>
 </body>
 </html>
