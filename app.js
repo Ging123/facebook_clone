@@ -15,13 +15,11 @@ app.use(session({
   resave: true
 }));
 
+app.use("/public", express.static(__dirname + "/public"));
 
-//Cuida de qualquer get feito na rota "/"
 app.get("/", (req, res) => {
-  /*Quando se abrir localhost:3000 esse código abaixo irar enviar a página 
-  loginOrSingin.html como resposta*/
-  res.sendFile(path.join(__dirname + "/public/loginOrSingin.html"));
+  res.sendFile(path.join(__dirname + "/public/pages/login/index.html"));
 });
 
-//A aplicação estará rodando no localhost:3000 
-app.listen(3000);
+//A aplicação estará rodando no localhost:5000 
+app.listen(5000);
