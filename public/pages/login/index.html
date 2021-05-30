@@ -88,28 +88,32 @@
       <div id="fast-and-easy-text">É rápido e fácil.</div>
     </div>
     
-    <form id="singin-form-container">
+    <form id="singin-form-container" >
       <div id="name-and-lastname-container">
         <input
           type="text"
           placeholder="Nome"
           class="secundary-input"
+          id="firstName"
         >
         <input
           type="text"
           placeholder="Sobrenome"
           class="secundary-input smaller-margin-left"
+          id="lastName"
         >
       </div>
       <input 
         type="text" 
         placeholder="Celular ou email"
         class="secundary-input small-margin-top"
+        id="cellphoneOrEmail"
       >
       <input 
         type="password" 
         placeholder="Nova senha"
         class="secundary-input small-margin-top"
+        id="singPassword"
       >
       <div class="smaller-text small-margin-top">Data de nascimento</div>
       <div id="birthday-container">
@@ -179,11 +183,12 @@
         </a>
         . Você poderá receber notificações por SMS e cancelar isso quando quiser.
       </div>
+      <p class="text-align-center erro-mensage invisible" id="singinErroMensage"></p>
       <div class="text-align-center bigger-margin-top">
         <input 
           id="singin"
           value="Cadastre-se"
-          type="button"
+          type="submit"
           class="secundary-button"
         >
       </div>
@@ -193,5 +198,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="public/global/js/domUtil.js"></script>
   <script src="public/pages/login/js/main.js"></script>
+  <script src="public/pages/login/js/validator/login.js"></script>
+  <script src="public/pages/login/js/validator/singin.js"></script>
 </body>
 </html>

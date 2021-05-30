@@ -12,6 +12,7 @@
   --mainBlue:#1778f3;
   --lightBlue:#7bb4ff;
   --mainGreen:#42b72a;
+  --mainRed:#ed4956;
 }
 
 body {
@@ -135,6 +136,11 @@ body {
 
 .bold { 
   font-weight:600; 
+}
+
+.erro-mensage {
+  color:var(--mainRed);
+  font-size:16px;
 }
 
 .default-link {

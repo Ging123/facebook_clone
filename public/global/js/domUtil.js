@@ -6,7 +6,7 @@ function createOptionTag(optionValue = []) {
   const optionTag = new Array(length);
   for(let i = 0; i < length; i++) {
     optionTag[i] = document.createElement("option");
-    optionTag[i].value = i + 1;
+    optionTag[i].value = optionValue[i];
     optionTag[i].textContent = optionValue[i];
   }
   return optionTag;
@@ -14,7 +14,7 @@ function createOptionTag(optionValue = []) {
 
 //METODO PARA UNIÃO DE ELEMENTO
 //OBSERVAÇÃO: ESSE MÉTODO APENAS FUNCIONA SE O "elementChild" FOR UM "ARRAY"
-function append(elementFather, elementChild) {
+function append(elementFather, elementChild = []) {
   for(let i = 0; i < elementChild.length; i++) {
     elementFather.append(elementChild[i]);
   }
