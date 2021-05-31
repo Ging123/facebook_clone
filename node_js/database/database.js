@@ -1,5 +1,7 @@
+//IMPORT MYSQL LIBRARY
 const mysql = require("mysql");
 
+//CREATE CONNECTION WITH DATABASE
 var connection = mysql.createConnection({
   host:"localhost",
   user:"root",
@@ -8,13 +10,13 @@ var connection = mysql.createConnection({
 });
 
 
-async function hasEqual(value = "", column = "") {
+async function valueExistInDatabase(value = "", column = "") {
   let search = new Promise((resultOfSearch) => {
-    connection.query(`select ${column} from users_info where ${column} = ?`, [value], 
+    connection.query(`select ${column} from users_info where ${column} = ?`,[value], 
     (err, result) => { 
       if(err) throw err;
-      const quantityOfValuesEqual = result.length;
-      if(quantityOfValuesEqual > 0) return resultOfSearch(true);
+      const quantityOfTheValueInDatabase = result.length;
+      if(quantityOfTheValueInDatabase > 0) return resultOfSearch(true);
       resultOfSearch(false);
     })
   });
@@ -35,17 +37,35 @@ async function insertUser(user) {
   return await insert;
 }
 
-/*async function getColumn(column = "") {
-  let databaseValues = new Promise((values) => {
-    connection.query(`select * from users_info order by fullname`, 
+
+async function searchDataToLogin(user) {
+  const columns = "email_or_celphone, user_password";
+  let search = new Promise((loginIsValid) => {
+    connection.query(`select ${columns} from users_info where 
+    email_or_celphone = ? and user_password = ?`, 
+    [user.emailOrNumber, user.password], 
     (err, result) => {
       if(err) throw err;
-      values(result);
-    });
-  })
-  return await databaseValues;
-}*/
+      if(result.length !== 1) return loginIsValid(false);
+      return loginIsValid(true);
+    })
+  });
+  return await search;
+}
 
 
+async function getUserDataWhenLogin(emailOrNumber = "") {
+  const columns = "fullname, email_or_celphone, birthday, gender";
+  const get = new Promise((receivedData) => {
+    connection.query(`select ${columns} from users_info where 
+    email_or_celphone = ?`, [emailOrNumber],
+    (err, userData) => {
+      if(err) throw err;
+      receivedData(userData);
+    }); 
+  });
+  return await get;
+}
 
-module.exports = {hasEqual, insertUser};
+module.exports = {valueExistInDatabase, insertUser, searchDataToLogin, 
+getUserDataWhenLogin};

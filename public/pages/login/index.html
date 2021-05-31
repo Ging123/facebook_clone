@@ -36,17 +36,19 @@
 
     <main>
       <div class="white-box-container">
-        <form class="flex-column">
+        <form class="flex-column" id="loginForm">
           <input 
             type="text" 
             placeholder="Email ou telefone" 
             name="emailOrEmail"
+            id="emailOrNumberToLogin"
             class="default-input blue-border-effect"
           >
           <input 
             type="password" 
             placeholder="Senha" 
             name="password"
+            id="loginPassword"
             class="default-input small-margin-top blue-border-effect"
           >
           <input 
@@ -54,6 +56,8 @@
             value="Entrar"
             class="main-button margin-top"
           >
+          <div class="text-align-center erro-mensage invisible margin-top" 
+          id="login-erro-message"></div>
           <div class="text-align-center margin-top">
             <span id="forgot-password" class="underline-effect">
               Esqueceu a senha?

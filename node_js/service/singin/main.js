@@ -1,5 +1,5 @@
 const {validateRegexp, textIsTooBig, textIsTooSmall} = require("../util/regex");
-const {hasEqual, insertUser} = require("../../database/database");
+const {valueExistInDatabase, insertUser} = require("../../database/database");
 
 //METODO PARA VALIDAR NOME DO USUARIO
 function validateIfIsName(text = "", textName) {
@@ -102,7 +102,7 @@ function validateFormatOfEmailOrNumber(emailOrNumber = "") {
 async function seeIfEmailOrNumberAlredyExist(emailOrNumber = "") {
   const erroDuplicateValue = "erro: esse email ou número de telefone já está sendo usado";
   const search = new Promise((resultOfSearch) => {
-    hasEqual(emailOrNumber, "email_or_celphone").then((alredyExist) => {
+    valueExistInDatabase(emailOrNumber, "email_or_celphone").then((alredyExist) => {
       if(alredyExist) return resultOfSearch(erroDuplicateValue);
       resultOfSearch("");
     });
