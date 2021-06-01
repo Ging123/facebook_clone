@@ -1,4 +1,4 @@
-const {searchDataToLogin, valueExistInDatabase} = require('../../database/database');
+const {searchDataToLogin, valueExistInDatabase } = require('../../database/database');
 
 async function loginUser(user) {
   const login = new Promise((resultOfLogin) => {
@@ -24,4 +24,16 @@ async function verifyWhatWasTheErroInLogin(user) {
 }
 
 
-module.exports = loginUser;
+function createUserObject(mainData, friendsData) {
+  return {
+    fullname:mainData.fullname,
+    emailOrCellphone:mainData.email_or_celphone,
+    birthday:mainData.birthday,
+    gender:mainData.gender,
+    friends:friendsData.friends,
+    friendsRequest:friendsData.friends_request
+  }
+  
+}
+
+module.exports = {loginUser, createUserObject};

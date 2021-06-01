@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const formidable = require("express-formidable");
-const loginUser = require("../service/login/main");
-const {getUserDataWhenLogin} = require("../database/database");
+const {loginUser, createUserObject} = require("../service/login/main");
+const {getUserDataWhenLogin, getFriends} = require("../database/database");
 
 router.use(formidable());
 
@@ -18,9 +18,12 @@ router.post("/", (req, res, next) => {
 
 
 router.post("/", (req, res) => {
-  getUserDataWhenLogin(req.fields.emailOrNumber).then((user) => {
-    req.session.user = user[0];
-    res.send("");
+  const emailOrNumber = req.fields.emailOrNumber;
+  getUserDataWhenLogin(emailOrNumber).then((user) => {
+    getFriends(emailOrNumber).then((friendsData) => {
+      req.session.user = createUserObject(user[0], friendsData);
+      res.send("");//IRA RETORNAR TRUE QUANDO TIVER A PROXIMA TELA
+    });
   });
 });
 

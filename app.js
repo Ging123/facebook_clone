@@ -6,6 +6,7 @@ const session = require("express-session");
 const singin = require("./node_js/routes/singin");
 const login = require("./node_js/routes/login");
 const sessionRoute = require("./node_js/routes/sessionRoute");
+const search = require("./node_js/routes/search");
 
 app.use(session({
   secret: 'ssshhhhh',
@@ -18,6 +19,7 @@ app.use("/public", express.static(__dirname + "/public"));
 app.use("/singin", singin);
 app.use("/login", login);
 app.use("/sessionRoute", sessionRoute);
+app.use("/search", search);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/public/pages/login/index.html"));

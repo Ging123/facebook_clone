@@ -2,7 +2,7 @@
 const mysql = require("mysql");
 
 //CREATE CONNECTION WITH DATABASE
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host:"localhost",
   user:"root",
   password:"password",
@@ -10,6 +10,7 @@ var connection = mysql.createConnection({
 });
 
 
+//METODOS QUE INTERAGEM COM A TABELA USERS_INFO
 async function valueExistInDatabase(value = "", column = "") {
   let search = new Promise((resultOfSearch) => {
     connection.query(`select ${column} from users_info where ${column} = ?`,[value], 
@@ -67,5 +68,20 @@ async function getUserDataWhenLogin(emailOrNumber = "") {
   return await get;
 }
 
+//METODOS QUE INTERAGEM COM A TABELA 'FRIENDS'
+async function getFriends(emailOrNumber = "") {
+  const columns = "friends, friends_request";
+  const get = new Promise((receivedData) => {
+    connection.query(`select ${columns} from friends where id = ?`, 
+    [emailOrNumber],
+    (err, userData) => {
+      if(err) throw err;
+      receivedData(userData[0]);
+    }); 
+  });
+  return await get;
+}
+
+
 module.exports = {valueExistInDatabase, insertUser, searchDataToLogin, 
-getUserDataWhenLogin};
+getUserDataWhenLogin, getFriends};

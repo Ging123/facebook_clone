@@ -17,7 +17,15 @@ function showErroMessageInLogin(erro) {
   erroTag.text(erro);
 }
 
-function hideErroMessage() {$("#login-erro-message").hide();}
+function hideErroMessage() {
+  $("#login-erro-message").hide();
+  //CODIGO ABAIXO É APENAS UM CÓDIGO TESTE PARA O SISTEMA DE PESQUISA
+  const emailOrNumber = prompt("digite email");
+  const searchedUser = {emailOrNumber:emailOrNumber}
+  $.post("/search", searchedUser, (res) => {
+    console.log(res);
+  })
+}
 
 
 document.querySelector("#loginForm").addEventListener("submit", login);
