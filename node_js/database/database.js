@@ -93,12 +93,12 @@ currentFriendsRequests) {
 }
 
 
-async function acceptRequestToBeFriend(whoWillToAccept, whoWillBeAccept) {
+async function acceptRequestToBeFriend(whoWillToAccept, whoWillBeAccepted) {
   const accept = new Promise((done) => {
     getFriends(whoWillToAccept).then((clientData) => {
-      const clientFriends = `${turnNullInString(clientData.friends)} ${whoWillBeAccept}`;
-      let clientReqNotNull = turnNullInString(clientData.friends_request);
-      const clientRequests = clientReqNotNull.replace(clientReqNotNull, "");
+      const clientFriends = `${turnNullInString(clientData.friends)} ${whoWillBeAccepted}`;
+      const clientReqNotNull = turnNullInString(clientData.friends_request);
+      const clientRequests = clientReqNotNull.replace(whoWillBeAccepted, "");
       updateFriendsAndFriendsRequest(clientFriends, clientRequests, whoWillToAccept).
       then((clientFriendsRefreshed) => {
         if(clientFriendsRefreshed) return done(true);

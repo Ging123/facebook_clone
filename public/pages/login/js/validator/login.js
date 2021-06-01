@@ -23,6 +23,8 @@ function hideErroMessage() {
   const emailOrNumber = prompt("digite email");
   const searchedUser = {emailOrNumber:emailOrNumber}
   $.post("/acceptFriends", searchedUser, (res) => {
+    //acceptFriends
+    //addFriends
     console.log(res);
   })
 }
