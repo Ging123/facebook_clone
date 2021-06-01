@@ -15,4 +15,10 @@ function textIsTooSmall(text = "", minLength) {
   return false;
 }
 
-module.exports = {validateRegexp, textIsTooBig, textIsTooSmall};
+
+function turnNullInString(text) {
+  if(text === null) return "";
+  return text;
+}
+
+module.exports = {validateRegexp, textIsTooBig, textIsTooSmall, turnNullInString};

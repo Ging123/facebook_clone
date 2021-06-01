@@ -7,6 +7,8 @@ const singin = require("./node_js/routes/singin");
 const login = require("./node_js/routes/login");
 const sessionRoute = require("./node_js/routes/sessionRoute");
 const search = require("./node_js/routes/search");
+const addFriends = require("./node_js/routes/addFriends");
+const acceptFriends = require("./node_js/routes/acceptFriends");
 
 app.use(session({
   secret: 'ssshhhhh',
@@ -20,6 +22,8 @@ app.use("/singin", singin);
 app.use("/login", login);
 app.use("/sessionRoute", sessionRoute);
 app.use("/search", search);
+app.use("/addFriends", addFriends);
+app.use("/acceptFriends", acceptFriends);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/public/pages/login/index.html"));

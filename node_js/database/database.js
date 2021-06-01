@@ -1,5 +1,6 @@
 //IMPORT MYSQL LIBRARY
 const mysql = require("mysql");
+const {turnNullInString} = require("../service/util/regex");
 
 //CREATE CONNECTION WITH DATABASE
 const connection = mysql.createConnection({
@@ -83,5 +84,44 @@ async function getFriends(emailOrNumber = "") {
 }
 
 
+function requestToBeAddAsFriend(whoIsAsking, whoWillGetTheRequest, 
+currentFriendsRequests) {
+  const newFriendsRequest = `${currentFriendsRequests} ${whoIsAsking}`;
+  connection.query(`update friends set friends_request = ? where id = ?`, 
+  [newFriendsRequest, whoWillGetTheRequest]),
+  (err) => {if(err) throw err}
+}
+
+
+async function acceptRequestToBeFriend(whoWillToAccept, whoWillBeAccept) {
+  const accept = new Promise((done) => {
+    getFriends(whoWillToAccept).then((clientData) => {
+      const clientFriends = `${turnNullInString(clientData.friends)} ${whoWillBeAccept}`;
+      let clientReqNotNull = turnNullInString(clientData.friends_request);
+      const clientRequests = clientReqNotNull.replace(clientReqNotNull, "");
+      updateFriendsAndFriendsRequest(clientFriends, clientRequests, whoWillToAccept).
+      then((clientFriendsRefreshed) => {
+        if(clientFriendsRefreshed) return done(true);
+        done(false);
+      });
+    });
+  });
+  return await accept;
+}
+
+
+async function updateFriendsAndFriendsRequest(friends, friendsRequest, id) {
+  const update = new Promise((done) => {
+    connection.query(`update friends set friends = ?, friends_request = ? 
+    where id = ?`, [friends, friendsRequest, id],
+    (err) => {
+      if(err) throw err;
+      done(true);
+    });
+  });
+  return await update;
+}
+
+
 module.exports = {valueExistInDatabase, insertUser, searchDataToLogin, 
-getUserDataWhenLogin, getFriends};
+getUserDataWhenLogin, getFriends, requestToBeAddAsFriend, acceptRequestToBeFriend};

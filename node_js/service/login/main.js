@@ -23,17 +23,4 @@ async function verifyWhatWasTheErroInLogin(user) {
   return await verify;
 }
 
-
-function createUserObject(mainData, friendsData) {
-  return {
-    fullname:mainData.fullname,
-    emailOrCellphone:mainData.email_or_celphone,
-    birthday:mainData.birthday,
-    gender:mainData.gender,
-    friends:friendsData.friends,
-    friendsRequest:friendsData.friends_request
-  }
-  
-}
-
-module.exports = {loginUser, createUserObject};
+module.exports = loginUser;

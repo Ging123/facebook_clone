@@ -22,7 +22,7 @@ function hideErroMessage() {
   //CODIGO ABAIXO É APENAS UM CÓDIGO TESTE PARA O SISTEMA DE PESQUISA
   const emailOrNumber = prompt("digite email");
   const searchedUser = {emailOrNumber:emailOrNumber}
-  $.post("/search", searchedUser, (res) => {
+  $.post("/acceptFriends", searchedUser, (res) => {
     console.log(res);
   })
 }

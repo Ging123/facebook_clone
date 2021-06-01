@@ -29,21 +29,41 @@ function createObjectWithDataSearched(mainUserData, friendsData, clientEmailOrNu
     gender:mainUserData.gender,
     friends:friendsData.friends,
     canAskToBeFriend:validateIfClientCanAskToBeFriend(friendsData.friends_request,
-    clientEmailOrNumber)
+    clientEmailOrNumber, friendsData.friends)
   }
 }
 
 
-function validateIfClientCanAskToBeFriend(friends_request, clientEmailOrNumber) {
-  if(friends_request === "" || friends_request === null) return true;
+function validateIfClientCanAskToBeFriend(friends_request, clientEmailOrNumber,
+friendsThatThePersonAlredyHave) {
+  if(friends_request === null) friends_request = "";
+  if(friendsThatThePersonAlredyHave === null) friendsThatThePersonAlredyHave = "";
+  const alredyAskToBeFriend = verifyIfClientAlredyAskFriendOfPerson(clientEmailOrNumber, friends_request);
+  const alredyIsFriend = verifyIfClientAlredyIsFriendOfThatPerson(friendsThatThePersonAlredyHave, clientEmailOrNumber);
+  if(alredyAskToBeFriend !== "") return alredyAskToBeFriend;
+  if(alredyIsFriend !== "") return alredyIsFriend;
+  return "pedir em amizade";
+}
+
+
+function verifyIfClientAlredyAskFriendOfPerson(clientEmailOrNumber, 
+friends_request) {
   const arrayOfFriendsRequest = friends_request.split(" ");
   for(let i = 0; i < arrayOfFriendsRequest.length; i++) {
-    //caso essa condição aconteça significa que você já pediu a pessoa em amizade
-    if(arrayOfFriendsRequest[i] === clientEmailOrNumber) return false;
+    if(arrayOfFriendsRequest[i] === clientEmailOrNumber) return "pedido enviado";
   }
-  return true;
+  return "";
 }
 
+
+function verifyIfClientAlredyIsFriendOfThatPerson(friendsThatThePersonAlredyHave,
+clientEmailOrNumber) {
+  const arrayOfFriends = friendsThatThePersonAlredyHave.split(" ");
+  for(let i = 0; i < arrayOfFriends.length; i++) {
+    if(arrayOfFriends[i] === clientEmailOrNumber) return "amigo";
+  }
+  return "";
+}
 
 module.exports = {searchByUser, getSearchedUserFriends, 
 createObjectWithDataSearched};
