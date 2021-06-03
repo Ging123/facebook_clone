@@ -1,6 +1,14 @@
 //ESSA É UMA PEQUENA LIB QUE EU FIZ PARA PODER AJUDAR NA MANIPULAÇÃO DE DOM
 
 //METODOS PARA CRIAÇÃO DE ELEMENTOS
+function createNewElement(tag = "", classes = "", content = "") {
+  let newElement = document.createElement(tag);
+  newElement.classList = classes;
+  newElement.textContent = content;
+  return newElement;
+}
+
+
 function createOptionTag(optionValue = []) {
   const length = optionValue.length;
   const optionTag = new Array(length);
@@ -16,6 +24,6 @@ function createOptionTag(optionValue = []) {
 //OBSERVAÇÃO: ESSE MÉTODO APENAS FUNCIONA SE O "elementChild" FOR UM "ARRAY"
 function append(elementFather, elementChild = []) {
   for(let i = 0; i < elementChild.length; i++) {
-    elementFather.append(elementChild[i]);
+    elementFather.appendChild(elementChild[i]);
   }
 }

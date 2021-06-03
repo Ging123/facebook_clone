@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook</title>
+  <link rel="shortcut icon" href="public/global/assets/title_icon.ico" 
+  type="image/x-icon">
+  <link rel="stylesheet" href="public/global/style/main.css">
+  <link rel="stylesheet" href="public//pages/home/css/style.css">
+  <script src="https://kit.fontawesome.com/cf3bda86bb.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  
+  <header id="home-main-header" class="main-header">
+    <section class="flex-row align-items-center">
+      <img 
+        src="public/global/assets/facebook_circle.png" 
+        class="header-facebook-img" 
+        alt="it was't possible to load this image"
+      >
+      <div class="small-margin-left relative">
+        <i class="search-icone-in-input fas fa-search" onclick="addToFriends()"></i>
+        <input 
+          type="text"
+          class="input-big"
+          id="input-to-add"
+          placeholder="Digite o email ou número de quem você quer adicionar"
+        >
+      </div>
+    </section>
+
+    <nav class="nav-container">
+      <div class="nav-link-clicked">
+        <div class="nav-link black-box-container">
+          <i class="fas fa-home"></i>
+          <div class="black-box">Página inicial</div>
+        </div>
+      </div>
+      <div class="nav-link-not-clicked">
+        <div class="nav-link dark-gray-effect  black-box-container">
+          <i class="fas fa-user-friends"></i>
+          <div class="black-box">Amigos</div>
+        </div>
+      </div>
+      <div class="nav-link-not-clicked">
+        <div class="nav-link dark-gray-effect  black-box-container">
+          <i class="fas fa-users"></i>
+          <div class="black-box">Grupos</div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="flex-row align-items-center">
+      <div class="circule-container black-box-container">
+        <i class="fas fa-plus"></i>
+        <div class="black-box">Criar</div>
+      </div>
+      <div class="circule-container small-margin-left black-box-container">
+        <i class="fab fa-facebook-messenger"></i>
+        <div class="black-box">Messenger</div>
+      </div>
+      <div class="circule-container small-margin-left black-box-container">
+        <i class="fas fa-bell"></i>
+        <div class="black-box">Notificações</div>
+      </div>
+      <div class="black-box-container" onclick="showAccountOptions()">
+        <img 
+          src="public/global/assets/user_image.jpg" 
+          alt="it was't possible to load this image" 
+          class="user-image small-margin-left"
+        >
+        <div class="black-box">Conta</div>
+      </div>
+    </section>
+  </header>
+
+  <section id="container-of-screen">
+    <main id="main-container">
+
+      <section class="white-box-container">
+        <div id="container-to-what-user-is-thinking">
+          <img 
+          src="public/global/assets/user_image.jpg" 
+          alt="it was't possible to load this image" 
+          class="user-image small-margin-left"
+          >
+          <input
+            type="text"
+            id="what-you-thinking-input"
+            class="input-big"
+          >
+        </div>
+        <div id="container-of-user-interactions">
+          <div class="container-of-interaction dark-gray-effect">
+            <i class="fas fa-video text-color-main-red"></i>
+            <span>Vídeo ao vivo</span>
+          </div>
+          <div class="container-of-interaction dark-gray-effect">
+            <i class="fas fa-images text-color-main-green"></i>
+            <span>Foto/video</span>
+          </div>
+          <div class="container-of-interaction dark-gray-effect">
+            <i class="far fa-laugh-beam text-color-main-yellow"></i>
+            <span>Sentimento/atividade</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="white-box-container margin-top">
+        <div id="container-of-mensage-to-create-room" class="dark-gray-effect">
+          <i class="fas fa-video"></i>
+          <span>Criar sala</span>
+        </div>
+      </section>
+
+      <section id="have-no-friends-message" class="white-box-container margin-top">
+        <div>Não há mais publicações</div>
+        <div>
+          Adicione mais amigos para ver mais publicações 
+          no seu Feed de Notícias.
+        </div>
+        <button class="main-button">Encontre amigos</button>
+      </section>
+
+    </main>
+  </section>
+
+  <section id="home-account-container" class="account-container invisible">
+    <div class="sub-account-container dark-gray-effect">
+      <img 
+        src="public/global/assets/user_image.jpg" 
+        alt="it was't possible to load this image" 
+        class="user-image"
+      >
+      <div class="small-margin-left">
+        <div class="bold" id="fullNameOfUser"></div>
+        <div class="default-text-color small-text">Veja seu perfil</div>
+      </div>
+    </div>
+    
+    <div class="line small-margin-top"></div>
+
+    <div class="sub-account-container dark-gray-effect small-margin-top">
+      <div class="circule-container">
+        <i class="fas fa-comment-alt"></i>
+      </div>
+      <div class="small-margin-left">
+        <div class="bold" id="fullNameOfUser">Dar feedback</div>
+        <div class="default-text-color small-text">
+          Ajude a melhorar o novo facebook
+        </div>
+      </div>
+    </div>
+
+    <div class="line small-margin-top"></div>
+
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+  const socket = io("http://localhost:5000");
+  </script>
+  <script src="public/global/js/domUtil.js"></script>
+  <script src="public/pages/home/js/main.js"></script>
+</body>
+</html>

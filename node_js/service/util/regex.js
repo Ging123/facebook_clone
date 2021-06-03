@@ -21,4 +21,19 @@ function turnNullInString(text) {
   return text;
 }
 
-module.exports = {validateRegexp, textIsTooBig, textIsTooSmall, turnNullInString};
+
+const turnStringInArray = (text = "") => {
+  return text.split(" ");
+}
+
+function removeValueFromArrayAnTurnInString(array, value) {
+  let text = "";
+  for(let i = 0; i < array.length; i++) {
+    if(array[i] !== value && i < array.length - 1) text += `${array[i]},`;
+    if(array[i] !== value && i === array.length - 1) text += `${array[i]}`;
+  }
+  return text;
+}
+
+module.exports = {validateRegexp, textIsTooBig, textIsTooSmall, turnNullInString,
+turnStringInArray, removeValueFromArrayAnTurnInString};

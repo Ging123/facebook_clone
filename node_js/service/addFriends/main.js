@@ -18,7 +18,7 @@ async function makeRequestToBeFriendOfPerson(emailOrNumberOfPerson, clientEmailO
 
 
 function alredyIsFriend(clientEmailOrNum, friendsOfPerson) {
-  const arrayOfFriends = friendsOfPerson.split(" ");
+  const arrayOfFriends = friendsOfPerson.split(",");
   for(let i = 0; i < arrayOfFriends.length; i++) {
     if(arrayOfFriends[i] === clientEmailOrNum) return true;
   }
@@ -27,7 +27,7 @@ function alredyIsFriend(clientEmailOrNum, friendsOfPerson) {
 
 
 function alredyAskToBeFriend(clientEmailOrNum, reqToThisPerson) {
-  const arrayOfRequests = reqToThisPerson.split(" ");
+  const arrayOfRequests = reqToThisPerson.split(",");
   for(let i = 0; i < arrayOfRequests.length; i++) {
     if(arrayOfRequests[i] === clientEmailOrNum) return true;
   }

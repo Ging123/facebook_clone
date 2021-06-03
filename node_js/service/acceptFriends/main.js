@@ -16,13 +16,12 @@ async function acceptFriend(emailOrNumOfPersonToAccept, clientEmailOrNum) {
 
 function seeIfPeopleIsAskingToBeFriend(emailOrNumOfPersonToAccept, 
 friendsRequestOfClient) {
-  const arrayOfRequests = friendsRequestOfClient.split(" ");
+  const arrayOfRequests = friendsRequestOfClient.split(",");
   for(let i = 0; i < arrayOfRequests.length; i++) {
     if(arrayOfRequests[i] === emailOrNumOfPersonToAccept) return true;
   }
   return false;
 }
-
 
 
 module.exports = {acceptFriend, seeIfPeopleIsAskingToBeFriend};

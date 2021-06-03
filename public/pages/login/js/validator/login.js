@@ -19,14 +19,7 @@ function showErroMessageInLogin(erro) {
 
 function hideErroMessage() {
   $("#login-erro-message").hide();
-  //CODIGO ABAIXO É APENAS UM CÓDIGO TESTE PARA O SISTEMA DE PESQUISA
-  const emailOrNumber = prompt("digite email");
-  const searchedUser = {emailOrNumber:emailOrNumber}
-  $.post("/acceptFriends", searchedUser, (res) => {
-    //acceptFriends
-    //addFriends
-    console.log(res);
-  })
+  window.location.href = "/";
 }
 
 

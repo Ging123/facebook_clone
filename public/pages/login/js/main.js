@@ -8,6 +8,7 @@ function generateArrayOfNumbers(firstNumber = 0, lastNumber = 0) {
   return numbers;
 }
 
+
 /*FUNÇÕES PARA MANIPULAR A VISIBILIDADE DO CONTAINER DE SE REGISTRAR*/
 function showSinginContainer() {
   $("#singin-hover").show();

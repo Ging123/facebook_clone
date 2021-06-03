@@ -1,6 +1,7 @@
 //IMPORT MYSQL LIBRARY
 const mysql = require("mysql");
-const {turnNullInString} = require("../service/util/regex");
+const {turnNullInString, 
+removeValueFromArrayAnTurnInString} = require("../service/util/regex");
 
 //CREATE CONNECTION WITH DATABASE
 const connection = mysql.createConnection({
@@ -86,20 +87,26 @@ async function getFriends(emailOrNumber = "") {
 
 function requestToBeAddAsFriend(whoIsAsking, whoWillGetTheRequest, 
 currentFriendsRequests) {
-  const newFriendsRequest = `${currentFriendsRequests} ${whoIsAsking}`;
+  let newFriendsRequest = createFriendsRequest(currentFriendsRequests,whoIsAsking);
   connection.query(`update friends set friends_request = ? where id = ?`, 
   [newFriendsRequest, whoWillGetTheRequest]),
   (err) => {if(err) throw err}
 }
 
 
+function createFriendsRequest(currentFriendsRequests, whoIsAsking) {
+  if(currentFriendsRequests === "")  return `${whoIsAsking}`;
+  return `${currentFriendsRequests},${whoIsAsking}`;
+}
+
+
 async function acceptRequestToBeFriend(whoWillToAccept, whoWillBeAccepted) {
   const accept = new Promise((done) => {
     getFriends(whoWillToAccept).then((clientData) => {
-      const clientFriends = `${turnNullInString(clientData.friends)} ${whoWillBeAccepted}`;
-      const clientReqNotNull = turnNullInString(clientData.friends_request);
-      const clientRequests = clientReqNotNull.replace(whoWillBeAccepted, "");
-      updateFriendsAndFriendsRequest(clientFriends, clientRequests, whoWillToAccept).
+      const clientFriends = createFriendsString(clientData.friends, whoWillBeAccepted);
+      const clientRequest = createClientRequestWithoutAnUser(clientData.friends_request, 
+      whoWillBeAccepted);
+      updateFriendsAndFriendsRequest(clientFriends, clientRequest, whoWillToAccept).
       then((clientFriendsRefreshed) => {
         if(clientFriendsRefreshed) return done(true);
         done(false);
@@ -107,6 +114,21 @@ async function acceptRequestToBeFriend(whoWillToAccept, whoWillBeAccepted) {
     });
   });
   return await accept;
+}
+
+
+function createClientRequestWithoutAnUser(requests, whoMustBeRemoved) {
+  requests = turnNullInString(requests);
+  if(requests === "") return "";
+  const arrayOfRequests = requests.split(",");
+  return removeValueFromArrayAnTurnInString(arrayOfRequests, whoMustBeRemoved);
+}
+
+
+function createFriendsString(clientFriends, whoWillBeAdded) {
+  clientFriends = turnNullInString(clientFriends);
+  if(clientFriends === "") return `${whoWillBeAdded}`;
+  return `${clientFriends},${whoWillBeAdded}`;
 }
 
 
