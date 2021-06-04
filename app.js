@@ -1,3 +1,6 @@
+const SECRET = "shhhh";
+const KEY = 'nome-do-cookie';
+
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -6,7 +9,11 @@ const server = http.createServer(app);
 const io = socketio(server);
 const path = require("path");
 const session = require("express-session"); 
-const {turnStringInArray} = require("./node_js/service/util/regex");
+
+const cookieParser = require('cookie-parser');
+const cookie = cookieParser(SECRET);
+const store = new session.MemoryStore();
+app.use(cookie);
 
 //ROTAS
 const singin = require("./node_js/routes/singin");
@@ -17,9 +24,11 @@ const addFriends = require("./node_js/routes/addFriends");
 const acceptFriends = require("./node_js/routes/acceptFriends");
 
 app.use(session({
-  secret: 'ssshhhhh',
-  saveUninitialized: true,
-  resave: true
+    secret: SECRET,
+    name: KEY,
+    resave: true,
+    saveUninitialized: true,
+    store: store
 }));
 app.use("/public", express.static(__dirname + "/public"));
 
@@ -41,12 +50,53 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/public/pages/home/index.html"));
 });
 
-//TRATAMENTOS DE ROTAS PARA O WEB SOCKET
-io.on("connection", (socket) => {
-  socket.on("getOnline", (user) => {
-    console.log(user);
+io.use(function(socket, next) {
+  var data = socket.request;
+  cookie(data, {}, function(err) {
+    var sessionID = data.signedCookies[KEY];
+    store.get(sessionID, function(err, session) {
+      if (err || !session) {
+        return next(new Error('Acesso negado!'));
+      } else {
+        socket.handshake.session = session;
+        return next();
+      }
+    });
   });
 });
+
+//TRATAMENTOS DE ROTAS PARA O WEB SOCKET
+io.on("connection", (socket) => {
+  //ENVIA UMA MENSAGEM DIZENDO QUE O CLIENTE TÁ ON E PERGUNTA SE SEUS AMIGOS ESTÃO
+  socket.on("clientIsLogged", (client) => {
+    var session = socket.handshake.session;
+    console.log(session.user)
+    //console.log(socket.handshake.session + "oi")
+    const clientId = client.emailOrCellphone;
+    const idOfClientFriends = client.friends.split(",");
+    const friend = {id:clientId, status:true}
+    socket.join(clientId);
+    socket.join(idOfClientFriends);
+    idOfClientFriends.forEach(friendId => {
+      socket.broadcast.to(friendId).emit("friendIsAskingIfClientOnline", friend);
+    });
+  });
+
+
+  socket.on("sendClientStatus", (friendId) => {
+    if(friendId === "") {
+      return socket.to(friendId).emit("friendSendHisStatus", 
+      {id:friendId, status:false});
+    } 
+    socket.to(friendId).emit("friendSendHisStatus", {id:friendId, status:true});
+  });
+
+
+  socket.on("disconnect", () => {
+    
+  });
+});
+
 
 //A aplicação estará rodando no localhost:5000 
 server.listen(5000);

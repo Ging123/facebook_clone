@@ -1,6 +1,20 @@
 //FUNÇÕES DE INTERAÇÃO COM O WEB SOCKET
-function turnUserOnline(user) {
-  socket.emit("getOnline", user);
+socket.on("friendIsAskingIfClientOnline", (friend) => {
+  manipulateStatusIcone(friend);
+  $.get("/sessionRoute", "", (user) => {
+    if(user !== "") return socket.emit("sendClientStatus", user.emailOrCellphone);
+    socket.emit("sendClientStatus", "");
+  });
+});
+
+
+socket.on("friendSendHisStatus", (friend) => {
+  manipulateStatusIcone(friend);
+});
+
+
+function manipulateStatusIcone(friend) {
+  console.log(friend)
 }
 
 //FUNÇÕES QUE INTERAGEM COM O BACKEND
@@ -17,7 +31,7 @@ function constructHtmlUsignUserData() {
   $.get("/sessionRoute", "", (user) => {
     putPlaceholderInInput(user.fullname);
     putUsernameInAccount(user.fullname);
-    turnUserOnline(user);
+    socket.emit("clientIsLogged", user);
   });
 }
 
