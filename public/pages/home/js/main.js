@@ -45,6 +45,7 @@ function constructHtmlUsignUserData() {
     putUsernameInAccount(user.fullname);
     putFriendsInChat(user.friends.split(","));
     socket.emit("clientIsLogged", user);
+    socket.emit("connectClientWithFriends");
   });
 }
 

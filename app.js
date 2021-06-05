@@ -9,6 +9,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 const path = require("path");
 const session = require("express-session"); 
+const {createChatId} = require("./node_js/service/util/regex");
 
 const cookieParser = require('cookie-parser');
 const cookie = cookieParser(SECRET);
@@ -22,6 +23,7 @@ const sessionRoute = require("./node_js/routes/sessionRoute");
 const search = require("./node_js/routes/search");
 const addFriends = require("./node_js/routes/addFriends");
 const acceptFriends = require("./node_js/routes/acceptFriends");
+const chat = require("./node_js/routes/chat");
 
 app.use(session({
     secret: SECRET,
@@ -39,6 +41,7 @@ app.use("/sessionRoute", sessionRoute);
 app.use("/search", search);
 app.use("/addFriends", addFriends);
 app.use("/acceptFriends", acceptFriends);
+app.use("/chat", chat);
 
 //ROTAS QUE VÃO RETORNAR PÁGINAS HTML
 app.get("/", (req, res) => {
@@ -70,7 +73,6 @@ io.on("connection", (socket) => {
   //ENVIA UMA MENSAGEM DIZENDO QUE O CLIENTE TÁ ON E PERGUNTA SE SEUS AMIGOS ESTÃO
   socket.on("clientIsLogged", (client) => {
     var session = socket.handshake.session;
-    //console.log(socket.handshake.session + "oi")
     const clientId = client.emailOrCellphone;
     const idOfClientFriends = client.friends.split(",");
     const friend = {id:clientId, status:true}
@@ -98,6 +100,23 @@ io.on("connection", (socket) => {
       socket.broadcast.to(friendId).emit("friendGotOffline", 
       {id:client.emailOrCellphone, status:false});
     });
+  });
+
+
+  socket.on("connectClientWithFriends", () => {
+    const user = socket.handshake.session.user;
+    if(user === undefined) return;
+    friendsId = user.friends.split(",");
+    for(let i = 0; i < friendsId.length; i++) {
+      socket.join(createChatId(user.emailOrCellphone,friendsId[i]));
+    }
+  });
+
+
+  socket.on("sendMessage", (friend) => {
+    const client = socket.handshake.session.user;
+    const chatId = createChatId(client.emailOrCellphone ,friend.id);
+    socket.broadcast.to(chatId).emit("messageReceved", friend.message);
   });
 });
 

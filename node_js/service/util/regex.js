@@ -35,5 +35,12 @@ function removeValueFromArrayAnTurnInString(array, value) {
   return text;
 }
 
+
+function createChatId(id1 = "", id2 = "") {
+  let chatId = [id1, id2];
+  chatId.sort();
+  return `${chatId[0]},${chatId[1]}`;
+} 
+
 module.exports = {validateRegexp, textIsTooBig, textIsTooSmall, turnNullInString,
-turnStringInArray, removeValueFromArrayAnTurnInString};
+turnStringInArray, removeValueFromArrayAnTurnInString, createChatId};

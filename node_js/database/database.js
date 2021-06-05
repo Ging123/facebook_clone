@@ -28,14 +28,16 @@ async function valueExistInDatabase(value = "", column = "") {
 
 
 async function insertUser(user) {
+  const emailOrCellphone = user.emailOrCellphone;
   const allColumns="(fullname, email_or_celphone, user_password, birthday, gender)";
   let insert = new Promise((resultOfInsert) => {
     connection.query(`insert into users_info ${allColumns}values(?, ?, ?, ?, ?)`,
     [user.fullname, user.emailOrCellphone, user.password, user.birthday, user.gender],
     (err) => {
       if(err) throw err;
+      insertInFriendsTable(emailOrCellphone);
       resultOfInsert(true);
-    })
+    });
   });
   return await insert;
 }
@@ -71,6 +73,12 @@ async function getUserDataWhenLogin(emailOrNumber = "") {
 }
 
 //METODOS QUE INTERAGEM COM A TABELA 'FRIENDS'
+async function insertInFriendsTable(id) {
+  connection.query("insert into friends (id) values (?)", [id],
+  (err) => {if(err) throw err;});
+}
+
+
 async function getFriends(emailOrNumber = "") {
   const columns = "friends, friends_request";
   const get = new Promise((receivedData) => {
@@ -145,5 +153,31 @@ async function updateFriendsAndFriendsRequest(friends, friendsRequest, id) {
 }
 
 
+/*FUNÇÕES PARA TABELA DE CHAT*/
+async function searchForChat(chatId) {
+  const search = new Promise((chat) => {
+    connection.query("select * from chat where id = ?", [chatId], 
+    (err, chatFound) => {
+      if(err) throw err;
+      if(chatFound.length === 0) return chat("");
+      chat(chatFound[0]);
+    });
+  });
+  return await search;
+}
+
+
+async function insertChat(chatId) {
+  const insert = new Promise((result) => {
+    connection.query("insert into chat (id) values (?)", [chatId], (err) => {
+      if(err) throw err;
+      result(true);
+    })
+  });
+  return await insert;
+}
+
+
 module.exports = {valueExistInDatabase, insertUser, searchDataToLogin, 
-getUserDataWhenLogin, getFriends, requestToBeAddAsFriend, acceptRequestToBeFriend};
+getUserDataWhenLogin, getFriends, requestToBeAddAsFriend, acceptRequestToBeFriend,
+searchForChat, insertChat};
