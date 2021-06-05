@@ -1,4 +1,5 @@
-const {searchForChat, insertChat} = require("../../database/database");
+const {searchForChat, insertChat, updateMessages} = 
+require("../../database/database");
 
 async function getChatOfClientAndFriend(chatId) {
   const get = new Promise((chatFound) => {
@@ -12,4 +13,17 @@ async function getChatOfClientAndFriend(chatId) {
   return await get;
 }
 
-module.exports = getChatOfClientAndFriend;
+
+async function sendMessageToDb(messageData) {
+  const send = new Promise((result) => {
+    searchForChat(messageData.chatId).then((chat) => {
+      if(chat === "") return result(false);
+      updateMessages(messageData, chat.chat).then(() => {
+        result(true);
+      });
+    }); 
+  });
+  return await send;
+}
+
+module.exports = {getChatOfClientAndFriend, sendMessageToDb};

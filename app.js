@@ -1,5 +1,5 @@
 const SECRET = "shhhh";
-const KEY = 'nome-do-cookie';
+const KEY = 'cookie';
 
 const express = require("express");
 const app = express();
@@ -14,7 +14,6 @@ const {createChatId} = require("./node_js/service/util/regex");
 const cookieParser = require('cookie-parser');
 const cookie = cookieParser(SECRET);
 const store = new session.MemoryStore();
-app.use(cookie);
 
 //ROTAS
 const singin = require("./node_js/routes/singin");
@@ -25,6 +24,7 @@ const addFriends = require("./node_js/routes/addFriends");
 const acceptFriends = require("./node_js/routes/acceptFriends");
 const chat = require("./node_js/routes/chat");
 
+app.use(cookie);
 app.use(session({
     secret: SECRET,
     name: KEY,
@@ -43,34 +43,30 @@ app.use("/addFriends", addFriends);
 app.use("/acceptFriends", acceptFriends);
 app.use("/chat", chat);
 
-//ROTAS QUE VÃO RETORNAR PÁGINAS HTML
 app.get("/", (req, res) => {
   if(req.session.user === undefined) {
-    //pagina para se logar ou se cadastrar
     return res.sendFile(path.join(__dirname + "/public/pages/login/index.html"));
   }
-  //Página inicial do usuario
   res.sendFile(path.join(__dirname + "/public/pages/home/index.html"));
 });
 
+
 io.use(function(socket, next) {
-  var data = socket.request;
+  const data = socket.request;
   cookie(data, {}, function(err) {
-    var sessionID = data.signedCookies[KEY];
+    const sessionID = data.signedCookies[KEY];
     store.get(sessionID, function(err, session) {
-      if (err || !session) {
-        return next(new Error('Acesso negado!'));
-      } else {
+      if (err || !session) return next(new Error('Acesso negado!'));
         socket.handshake.session = session;
         return next();
-      }
     });
   });
 });
 
+
 //TRATAMENTOS DE ROTAS PARA O WEB SOCKET
 io.on("connection", (socket) => {
-  //ENVIA UMA MENSAGEM DIZENDO QUE O CLIENTE TÁ ON E PERGUNTA SE SEUS AMIGOS ESTÃO
+
   socket.on("clientIsLogged", (client) => {
     var session = socket.handshake.session;
     const clientId = client.emailOrCellphone;

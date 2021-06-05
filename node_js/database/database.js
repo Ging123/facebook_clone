@@ -178,6 +178,29 @@ async function insertChat(chatId) {
 }
 
 
+async function updateMessages(messageInfo, currentMessages) {
+  const message = {whoSend:messageInfo.whoSend, message:messageInfo.message};
+  const newMessages = createNewMessages(message, currentMessages);
+  const update = new Promise((sucess) => {
+    connection.query("update chat set chat = ? where id = ?", 
+    [newMessages, messageInfo.chatId], (err) => {
+      if(err) throw err;
+      sucess(true);
+    });
+  });
+  return await update;
+}
+
+
+function createNewMessages(messageToBeAdd, currentMessages) {
+  messageToBeAdd = JSON.stringify(messageToBeAdd);
+  if(currentMessages === null || currentMessages === "") {
+    return `${messageToBeAdd}`;
+  }
+  return `${currentMessages}/,/${messageToBeAdd}`;
+}
+
+
 module.exports = {valueExistInDatabase, insertUser, searchDataToLogin, 
 getUserDataWhenLogin, getFriends, requestToBeAddAsFriend, acceptRequestToBeFriend,
-searchForChat, insertChat};
+searchForChat, insertChat, updateMessages};
