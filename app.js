@@ -70,7 +70,6 @@ io.on("connection", (socket) => {
   //ENVIA UMA MENSAGEM DIZENDO QUE O CLIENTE TÁ ON E PERGUNTA SE SEUS AMIGOS ESTÃO
   socket.on("clientIsLogged", (client) => {
     var session = socket.handshake.session;
-    console.log(session.user)
     //console.log(socket.handshake.session + "oi")
     const clientId = client.emailOrCellphone;
     const idOfClientFriends = client.friends.split(",");
@@ -93,7 +92,12 @@ io.on("connection", (socket) => {
 
 
   socket.on("disconnect", () => {
-    
+    const client = socket.handshake.session.user;
+    const idOfClientFriends = client.friends.split(",");
+    idOfClientFriends.forEach(friendId => {
+      socket.broadcast.to(friendId).emit("friendGotOffline", 
+      {id:client.emailOrCellphone, status:false});
+    });
   });
 });
 

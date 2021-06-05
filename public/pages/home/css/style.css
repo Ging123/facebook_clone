@@ -86,3 +86,69 @@
 #have-no-friends-message.white-box-container {
   padding:40px;
 }
+
+#chat-box {
+  position: fixed;
+  right: 30px;
+  bottom:10px;
+  background: white;
+  width: 345px;
+  height: 450px;
+  z-index: 98;
+  box-shadow: 1px 1px 5px grey;
+  border-radius: 6px;
+}
+
+.chat-header {
+  padding:5px;
+  box-shadow:1px 1px 10px #e2e0e0;
+}
+
+#name-and-pic-of-friend {
+  display:flex;
+  flex-flow:row;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  padding:5px;
+  border-radius:6px;
+}
+
+#name-and-pic-of-friend > div {
+  width:120px;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  margin:0px 5px;
+}
+
+#chat-icone-bar {
+  display:flex;
+  flex-flow:row;
+  align-items:center;
+  justify-content:center;
+}
+
+#chat-area {
+  margin-top:5px;
+  height:326px;
+  overflow-y:scroll;
+  overflow-x:hidden;
+}
+
+#input-to-send-message-container {
+  padding:10px;
+  display:flex;
+  flex-flow:row;
+  align-items:center;
+  box-shadow:1px 1px 10px #a7a5a5;
+}
+
+#input-to-send-message-container > input {
+  margin-right:5px;
+  width:325px;
+}
+
+#input-of-chat {
+  padding:10px;
+}

@@ -209,6 +209,54 @@ body {
   background:#cecece;
 }
 
+#friends-box-container.account-container {
+  height:550px;
+}
+
+.menssager-container {
+  display:flex;
+  flex-flow:row;
+  align-items:center;
+  justify-content:space-between;
+  padding:5px;
+}
+
+.menssager-container > .big-text {
+  font-size:22px;
+}
+
+.icone-container {
+  border-radius:100px;
+  font-size:16px;
+  width:30px;
+  text-align:center;
+  padding:5px 0px;
+  margin-right:5px;
+  cursor:pointer;
+}
+
+.icone-container:hover {
+  background:#f3f1f1;
+}
+
+.icone-container:active {
+  background:#e4e4e4;
+}
+
+.user-image-container {
+  position:relative;
+}
+
+.status {
+  position:absolute;
+  background:red;
+  padding:6px;
+  border:2px solid white;
+  border-radius:100px;
+  bottom:3px;
+  left:40px;
+}
+
 /*ESTILO DOS INPUTS*/
 .default-input {
   font-size:16px;
@@ -339,7 +387,11 @@ body {
 .text-color-main-red { color:var(--mainRed); }
 .text-color-main-green { color:var(--mainGreen); }
 .text-color-main-yellow { color:var(--mainYellow); }
+.text-color-light-blue { color:var(--mainBlue); }
 .default-text-color { color:var(--darkerGray); }
+
+/*BACKGROUNDS*/
+.bg-white { background:white; }
 
 @media (max-width:820px) {
   .nav-container {display:none;}

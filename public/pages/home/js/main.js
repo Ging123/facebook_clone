@@ -13,11 +13,23 @@ socket.on("friendSendHisStatus", (friend) => {
 });
 
 
+socket.on("friendGotOffline", (friend) => {
+  manipulateStatusIcone(friend);
+});
+
+
 function manipulateStatusIcone(friend) {
-  console.log(friend)
+  const selectorId = friend.id + "status";
+  const statusHtml = document.getElementById(selectorId);
+  if(statusHtml === null) return console.log("erro");
+  const statusIcone = statusHtml.getElementsByClassName("status")[0];
+  if(friend.status === true) {//tá online
+    return statusIcone.style.background = "green";
+  }
+  statusIcone.style.background = "red";
 }
 
-//FUNÇÕES QUE INTERAGEM COM O BACKEND
+//FUNÇÕES QUE INTERAGEM COM O BACKEND VIA HTTP
 function addToFriends() {
   const inputValue = document.querySelector("#input-to-add").value;
   const userToBeAdd = {emailOrNumber:inputValue}
@@ -31,6 +43,7 @@ function constructHtmlUsignUserData() {
   $.get("/sessionRoute", "", (user) => {
     putPlaceholderInInput(user.fullname);
     putUsernameInAccount(user.fullname);
+    putFriendsInChat(user.friends.split(","));
     socket.emit("clientIsLogged", user);
   });
 }
@@ -44,6 +57,43 @@ function putPlaceholderInInput(fullname = "") {
 
 
 function logout() {$.get("/sessionRoute/logout", "", () => {window.location = "/";});}
+
+//FUNÇÕES PARA A CONSTRUÇÃO DO CHAT
+function putFriendsInChat(friends) {
+  const friendBox = document.querySelector("#friends-box-container");
+  const Classes = "sub-account-container dark-gray-effect small-margin-top";
+  for(let i = 0; i < friends.length; i++) {
+    const containerFataher = createNewElement("div", "friends-container");
+    const subContainer = createNewElement("div", Classes);
+    const imageContainer = createFriendImageContainer(friends[i]);
+    const nameContainer = createNameContainer(friends[i]);
+    subContainer.appendChild(imageContainer);
+    subContainer.appendChild(nameContainer);
+    containerFataher.append(subContainer);
+    containerFataher.addEventListener("click", () => openChat(friends[i]))
+    friendBox.appendChild(containerFataher);
+  }
+}
+
+
+function createFriendImageContainer(id) {
+  const src = "public/global/assets/user_image.jpg";
+  const container = createNewElement("div", "user-image-container","", id+"status");
+  const image = createNewImage(src, "user-image");
+  const statusIcone = createNewElement("div", "status");
+  container.appendChild(image);
+  container.appendChild(statusIcone);
+  return container;
+}
+
+
+function createNameContainer(fullname) {
+  const container = createNewElement("div", "small-margin-left");
+  const text = createNewElement("div", "bold", fullname);
+  container.appendChild(text);
+  return container;
+}
+
 
 //FUNÇÕES PARA AUXILIAR NA CONSTRUÇÃO DO CONTAINER 'ACCOUNT'
 function createSubContainers() {
@@ -119,6 +169,22 @@ function hideAccountOptions() {
 }
 
 
+function showMessagesBar() {
+  document.querySelector("#container-of-screen").
+  addEventListener("mousedown", hideMessageBar);
+  document.querySelector("#home-main-header").
+  addEventListener("mousedown", hideMessageBar);
+  $("#friends-box-container").show();
+}
+
+
+function hideMessageBar() {
+  document.querySelector("#container-of-screen").
+  removeEventListener("mousedown", hideMessageBar);
+  document.querySelector("#home-main-header").
+  removeEventListener("mousedown", hideMessageBar);
+  $("#friends-box-container").hide();
+}
 
 constructHtmlUsignUserData();
 createSubContainers();
