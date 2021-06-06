@@ -186,3 +186,35 @@
 .friend-ballon {
   background:var(--mainBackground);
 }
+
+#friend-request-container.white-box-container {
+  padding:20px;
+}
+
+#friend-request-container > .big-text {
+  font-size:20px;
+}
+
+.friend-request-box {
+  border-radius:6px;
+  padding:20px;
+  display:flex;
+  flex-flow:row;
+  align-items:center;
+  margin-top:10px;
+}
+
+.friend-request-box .user-image {
+  width:50px;
+}
+
+.friend-request-box > div {
+  width:85%;
+}
+
+.friend-request-box .main-button {
+  margin-top:2px;
+  padding:10px;
+  font-size:14px;
+  width:100%;
+}

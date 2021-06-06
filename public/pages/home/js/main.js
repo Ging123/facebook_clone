@@ -30,21 +30,13 @@ function manipulateStatusIcone(friend) {
 }
 
 //FUNÇÕES QUE INTERAGEM COM O BACKEND VIA HTTP
-function addToFriends() {
-  const inputValue = document.querySelector("#input-to-add").value;
-  const userToBeAdd = {emailOrNumber:inputValue}
-  $.post("/addFriends", userToBeAdd, (result) => {
-    alert(result);
-  });
-}
-
-
 function constructHtmlUsignUserData() {
   $.get("/sessionRoute", "", (user) => {
     putPlaceholderInInput(user.fullname);
     putUsernameInAccount(user.fullname);
+    seeIfUserHasAnyRequestToBeFriend(user.friendsRequest.split(","));
     putFriendsInChat(user.friends.split(","));
-    socket.emit("clientIsLogged", user);
+    socket.emit("clientIsLogged");
     socket.emit("connectClientWithFriends");
   });
 }

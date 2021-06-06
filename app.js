@@ -67,8 +67,8 @@ io.use(function(socket, next) {
 //TRATAMENTOS DE ROTAS PARA O WEB SOCKET
 io.on("connection", (socket) => {
 
-  socket.on("clientIsLogged", (client) => {
-    var session = socket.handshake.session;
+  socket.on("clientIsLogged", () => {
+    var client = socket.handshake.session.user;
     const clientId = client.emailOrCellphone;
     const idOfClientFriends = client.friends.split(",");
     const friend = {id:clientId, status:true}
@@ -113,6 +113,14 @@ io.on("connection", (socket) => {
     const client = socket.handshake.session.user;
     const chatId = createChatId(client.emailOrCellphone ,friend.id);
     socket.broadcast.to(chatId).emit("messageReceved", friend.message);
+  });
+
+
+  socket.on("addFriend", (friendToBeAdd) => {
+    const clientId = socket.handshake.session.user.emailOrCellphone;
+    if(clientId === undefined) return "erro";
+    socket.join(friendToBeAdd);
+    socket.broadcast.to(friendToBeAdd).emit("someoneAskToBeYourFriend",clientId);
   });
 });
 
