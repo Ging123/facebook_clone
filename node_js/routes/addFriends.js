@@ -10,6 +10,7 @@ router.post("/", (req, res, next) => {
   const cantAddYourself = "erro você não pode se adicionar";
   const emailOrNumOfPersonToAdd = req.fields.emailOrNumber;
   const clientEmailOrNum = req.session.user.emailOrCellphone;
+  if(emailOrNumOfPersonToAdd === "") return res.send("campo vazio"); 
   if(clientEmailOrNum === undefined) return res.send(erroNotLogged);
   if(emailOrNumOfPersonToAdd === clientEmailOrNum) return res.send(cantAddYourself);
   makeRequestToBeFriendOfPerson(emailOrNumOfPersonToAdd, clientEmailOrNum)

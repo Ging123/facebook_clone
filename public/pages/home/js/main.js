@@ -179,5 +179,39 @@ function hideMessageBar() {
   $("#friends-box-container").hide();
 }
 
+
+function createNavBar() {
+  const href = ["https://www.facebook.com/coronavirus_info/?page_source=bookmark&hoisted_module_types%5B0%5D=update&hoisted_module_types%5B1%5D=vaccine_finder&hoisted_module_types%5B2%5D=vaccine_tracker&hoisted_module_types%5B3%5D=latest_news",
+  "https://www.facebook.com/friends/", "https://www.facebook.com/watch/", 
+  "https://www.facebook.com/?sk=welcome", "https://www.facebook.com/groups/discover/",
+  "https://www.facebook.com/marketplace/?ref=bookmark", "https://www.facebook.com/events?source=46&action_history=null",
+  "https://www.facebook.com/memories/?source=bookmark", "https://www.facebook.com/saved/?cref=28",
+  "https://www.facebook.com/pages/?category=top&ref=bookmarks"];
+  const text = ["COVID-19: Central de Informações", "Encontrar amigos", "Watch",
+  "Bem-vindo(a)", "Grupos", "Marketplace", "Eventos", "Lembranças", "Salvo",
+  "Páginas"];
+  const src = ["public/pages/home/assets/covid.png", "public/pages/home/assets/find-friends.png" , 
+  "public/pages/home/assets/watch.png", "public/pages/home/assets/welcome.png",
+  "public/pages/home/assets/group.png", "public/pages/home/assets/marketplace.png",
+  "public/pages/home/assets/events.png", "public/pages/home/assets/remeber.png",
+  "public/pages/home/assets/save.png", "public/pages/home/assets/pages.png"];
+  const navBarContainer = document.querySelector("#nav-bar");
+  for(let i = 0; i < text.length; i++) {
+    const linkContainer = createLinkBarForNavBar(href[i], src[i], text[i]);
+    navBarContainer.appendChild(linkContainer);
+  }
+}
+
+
+function createLinkBarForNavBar(href, src, text) {
+  const container = createNewLinkTag(href);
+  const img = createNewImage(src);
+  const div = createNewElement("div", "", text);
+  container.appendChild(img);
+  container.appendChild(div);
+  return container;
+}
+
 constructHtmlUsignUserData();
 createSubContainers();
+createNavBar();

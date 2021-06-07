@@ -2,11 +2,21 @@
 
 //METODOS PARA CRIAÇÃO DE ELEMENTOS
 function createNewElement(tag = "", classes = "", content = "", id = "") {
-  let newElement = document.createElement(tag);
+  const newElement = document.createElement(tag);
   newElement.classList = classes;
   newElement.textContent = content;
   newElement.id = id;
   return newElement;
+}
+
+
+function createNewLinkTag(href="" ,classes="", target="_blank", content="") {
+  const a = document.createElement("a");
+  a.href = href;
+  a.classList = classes;
+  a.textContent = content;
+  a.target = target;
+  return a;
 }
 
 
