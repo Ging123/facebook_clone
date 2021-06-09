@@ -75,6 +75,8 @@ io.on("connection", (socket) => {
     socket.join(clientId);
     socket.join(idOfClientFriends);
     idOfClientFriends.forEach(friendId => {
+      const chatId = createChatId(clientId ,friendId);
+      socket.join(chatId);
       socket.broadcast.to(friendId).emit("friendIsAskingIfClientOnline", friend);
     });
   });
@@ -102,7 +104,7 @@ io.on("connection", (socket) => {
   socket.on("connectClientWithFriends", () => {
     const user = socket.handshake.session.user;
     if(user === undefined) return;
-    friendsId = user.friends.split(",");
+    const friendsId = user.friends.split(",");
     for(let i = 0; i < friendsId.length; i++) {
       socket.join(createChatId(user.emailOrCellphone,friendsId[i]));
     }
@@ -112,6 +114,7 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", (friend) => {
     const client = socket.handshake.session.user;
     const chatId = createChatId(client.emailOrCellphone ,friend.id);
+    socket.join(chatId);
     socket.broadcast.to(chatId).emit("messageReceved", friend.message);
   });
 
@@ -122,8 +125,17 @@ io.on("connection", (socket) => {
     socket.join(friendToBeAdd);
     socket.broadcast.to(friendToBeAdd).emit("someoneAskToBeYourFriend",clientId);
   });
+
+
+  socket.on("requestAccepted", (whoWasAccepted) => {
+    const clientId = socket.handshake.session.user.emailOrCellphone;
+    if(clientId === undefined) return "erro";
+    const chatId = createChatId(clientId ,whoWasAccepted);
+    socket.join(chatId);
+    socket.broadcast.to(whoWasAccepted).emit("newFriendAdd", clientId);
+  });
 });
 
 
-//A aplicação estará rodando no localhost:5000 
+//A aplicação estará rodando no localhost:5000
 server.listen(5000);

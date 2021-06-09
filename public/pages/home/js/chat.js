@@ -2,6 +2,7 @@ socket.on("messageReceved", message => createClientRecevedBallon(message));
 const sendMessageOnEnter = e => { if(e.keyCode === 13) sendMessage(); }
 
 function openChat(friend) {
+  if(friend !== "") {
   hideMessageBar();
   document.querySelectorAll("body")[0]
   .addEventListener("keydown", sendMessageOnEnter);
@@ -9,7 +10,9 @@ function openChat(friend) {
   $.post("/chat", {emailOrCellphone:friend}, (messages) => {
     putMessageGotInTheScreen(messages, friend);
     $("#chat-box").show();
+    scrollChatToBottom();
   });
+  }
 }
 
 
@@ -38,6 +41,7 @@ function createClientChatBallon(message) {
   const clientBallon = createNewElement("div", "client-ballon", message);
   ballonContainer.appendChild(clientBallon);
   chatContainer.appendChild(ballonContainer);
+  scrollChatToBottom();
 }
 
 
@@ -47,17 +51,26 @@ function createClientRecevedBallon(message) {
   const friendBallon = createNewElement("div", "friend-ballon", message);
   ballonContainer.appendChild(friendBallon);
   chatContainer.appendChild(ballonContainer);
+  scrollChatToBottom();
 }
 
 
 function putMessageGotInTheScreen(messages, friend) {
   messages = messages.split("/,/")
   for(let i = 0; i < messages.length; i++) {
-    messages[i] = JSON.parse(messages[i]);
-    if(messages[i].whoSend === friend) {
-      createClientRecevedBallon(messages[i].message);
-    } else {
-      createClientChatBallon(messages[i].message);
+    if(messages[i] !== "") {
+      messages[i] = JSON.parse(messages[i]);
+      if(messages[i].whoSend === friend) {
+        createClientRecevedBallon(messages[i].message);
+      } else {
+        createClientChatBallon(messages[i].message);
+      }
     }
   }
+}
+
+
+function scrollChatToBottom() {
+  const div = document.getElementById("chat-area");
+  div.scrollTop = div.scrollHeight - div.clientHeight;
 }

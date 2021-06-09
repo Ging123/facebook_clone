@@ -8,6 +8,16 @@ socket.on("friendIsAskingIfClientOnline", (friend) => {
 });
 
 
+socket.on("newFriendAdd", (friendId) => {
+  $.get("/sessionRoute/refresh", "", () => {
+    friendId = [friendId];
+    putFriendsInChat(friendId);
+    socket.emit("clientIsLogged");
+    socket.emit("connectClientWithFriends");
+  });
+});
+
+
 socket.on("friendSendHisStatus", (friend) => {
   manipulateStatusIcone(friend);
 });
@@ -53,6 +63,7 @@ function logout() {$.get("/sessionRoute/logout", "", () => {window.location = "/
 
 //FUNÇÕES PARA A CONSTRUÇÃO DO CHAT
 function putFriendsInChat(friends) {
+  if(friends[0] === "") return;
   const friendBox = document.querySelector("#friends-box-container");
   const Classes = "sub-account-container dark-gray-effect small-margin-top";
   for(let i = 0; i < friends.length; i++) {

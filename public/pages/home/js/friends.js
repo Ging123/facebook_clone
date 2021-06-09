@@ -1,10 +1,12 @@
 socket.on("someoneAskToBeYourFriend", whoIsAsking => {
-  $.get("sessionRoute", user => {
+  $.get("sessionRoute", "" ,user => {
     const friendsRequest = user.friendsRequest.split(",");
-    for(let i = 0; i < friendsRequest; i++) {
+    for(let i = 0; i < friendsRequest.length; i++) {
       if(friendsRequest[i] === whoIsAsking) return;
     }
-    putFriendRequestInScreen(whoIsAsking);
+    $.get("sessionRoute/refresh", "",() => {
+      putFriendRequestInScreen(whoIsAsking);
+    });
   });
 });
 
@@ -61,7 +63,7 @@ function acceptFriend(whoIsAsking) {
       if(friendBoxLeft.length === 0) $("#friend-request-container").hide();
       whoIsAsking = [whoIsAsking];
       putFriendsInChat(whoIsAsking);
-      return;
+      socket.emit("requestAccepted", whoIsAsking);
     }
     console.log("erro");
   });

@@ -136,6 +136,7 @@ section#container-of-screen {
   height:326px;
   overflow-y:scroll;
   overflow-x:hidden;
+  padding:15px 0px;
 }
 
 #input-to-send-message-container {

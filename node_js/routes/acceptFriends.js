@@ -7,6 +7,13 @@ const {refreshSession} = require("../service/util/session");
 router.use(formidable());
 
 router.post("/", (req, res, next) => {
+  refreshSession(req.session.user.emailOrCellphone).then((data) => {
+    req.session.user = data;
+    next();
+  });
+});
+
+router.post("/", (req, res, next) => {
   const emailOrNumOfPersonToAccept = req.fields.emailOrNumber;
   const clientEmailOrNum = req.session.user.emailOrCellphone;
   const friendsRequestOfClient = req.session.user.friendsRequest;
